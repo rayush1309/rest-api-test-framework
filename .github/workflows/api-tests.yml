@@ -1,0 +1,101 @@
+name: API Automation CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target configuration environment
+        required: true
+        type: choice
+        default: qa
+        options: [qa, dev, prod]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: api-tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      TEST_ENVIRONMENT: ${{ github.event.inputs.environment || 'qa' }}
+      GOREST_ACCESS_TOKEN: ${{ secrets.GOREST_ACCESS_TOKEN }}
+      DUMMYJSON_TEST_USERNAME: ${{ secrets.DUMMYJSON_TEST_USERNAME }}
+      DUMMYJSON_TEST_PASSWORD: ${{ secrets.DUMMYJSON_TEST_PASSWORD }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java 17 and Maven cache
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Compile production and test sources
+        id: compile
+        continue-on-error: true
+        run: mvn --batch-mode clean -DskipTests test-compile
+
+      - name: Smoke suite
+        id: smoke
+        continue-on-error: true
+        run: bash scripts/run-ci-suite.sh smoke
+
+      - name: Regression suite
+        id: regression
+        continue-on-error: true
+        run: bash scripts/run-ci-suite.sh regression
+
+      - name: End-to-end suite
+        id: e2e
+        continue-on-error: true
+        run: bash scripts/run-ci-suite.sh e2e
+
+      - name: Mock suite
+        id: mocking
+        continue-on-error: true
+        run: bash scripts/run-ci-suite.sh mocking
+
+      - name: Generate Allure HTML report
+        id: allure
+        if: ${{ always() && hashFiles('target/allure-results/**') != '' }}
+        continue-on-error: true
+        run: mvn --batch-mode allure:report
+
+      - name: Upload test and Allure reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: api-test-reports-${{ github.run_number }}
+          path: |
+            target/allure-results/
+            target/site/allure-maven-plugin/
+            target/ci-surefire-reports/
+            target/surefire-reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Propagate build and test failures
+        if: always()
+        env:
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+          SMOKE_OUTCOME: ${{ steps.smoke.outcome }}
+          REGRESSION_OUTCOME: ${{ steps.regression.outcome }}
+          E2E_OUTCOME: ${{ steps.e2e.outcome }}
+          MOCK_OUTCOME: ${{ steps.mocking.outcome }}
+          ALLURE_OUTCOME: ${{ steps.allure.outcome }}
+        run: |
+          for outcome in "$COMPILE_OUTCOME" "$SMOKE_OUTCOME" "$REGRESSION_OUTCOME" "$E2E_OUTCOME" "$MOCK_OUTCOME" "$ALLURE_OUTCOME"; do
+            if [ "$outcome" != "success" ]; then
+              echo "A required build or test stage did not succeed: $outcome"
+              exit 1
+            fi
+          done
