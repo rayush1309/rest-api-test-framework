@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Product defects",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*(AssertionError|AssertionFailedError).*"
+  },
+  {
+    "name": "Infrastructure and network errors",
+    "matchedStatuses": ["broken"],
+    "traceRegex": ".*(ConnectException|SocketTimeoutException|UnknownHostException).*"
+  }
+]

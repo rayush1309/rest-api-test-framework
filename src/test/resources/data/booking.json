@@ -1,0 +1,11 @@
+{
+  "firstname": "Placeholder",
+  "lastname": "Guest",
+  "totalprice": 5000,
+  "depositpaid": true,
+  "bookingdates": {
+    "checkin": "2030-01-10",
+    "checkout": "2030-01-15"
+  },
+  "additionalneeds": "Breakfast"
+}

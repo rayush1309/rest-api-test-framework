@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="CI Mock Suite" verbose="1">
+    <listeners>
+        <listener class-name="com.sdetlabs.framework.concurrent.ThreadLocalContextListener"/>
+        <listener class-name="com.sdetlabs.framework.reporting.AllureReportListener"/>
+    </listeners>
+    <test name="Mock-based tests">
+        <groups><run><include name="mocking"/></run></groups>
+        <classes>
+            <class name="com.sdetlabs.framework.mocking.WireMockFrameworkTest"/>
+            <class name="com.sdetlabs.framework.mocking.CommerceSimulationTest"/>
+            <class name="com.sdetlabs.api.commerce.OrderProcessingE2ETest"/>
+            <class name="com.sdetlabs.framework.concurrent.ParallelExecutionTest"/>
+        </classes>
+    </test>
+</suite>

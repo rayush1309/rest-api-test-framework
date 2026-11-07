@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="CI End-to-End Suite" verbose="1">
+    <listeners>
+        <listener class-name="com.sdetlabs.framework.concurrent.ThreadLocalContextListener"/>
+        <listener class-name="com.sdetlabs.framework.reporting.AllureReportListener"/>
+    </listeners>
+    <test name="End-to-end tests">
+        <groups><run><include name="e2e"/></run></groups>
+        <packages><package name="com.sdetlabs.*"/></packages>
+    </test>
+</suite>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Parallel Local Framework Suite" verbose="1" parallel="classes"
+       thread-count="4" data-provider-thread-count="6">
+    <listeners>
+        <listener class-name="com.sdetlabs.framework.concurrent.ThreadLocalContextListener"/>
+        <listener class-name="com.sdetlabs.framework.reporting.AllureReportListener"/>
+    </listeners>
+    <test name="Parallel-safe local checks">
+        <classes>
+            <class name="com.sdetlabs.framework.FoundationTest"/>
+            <class name="com.sdetlabs.framework.http.RateLimitRetryTest"/>
+            <class name="com.sdetlabs.framework.http.NonIdempotentRetryTest"/>
+            <class name="com.sdetlabs.framework.mocking.WireMockFrameworkTest"/>
+            <class name="com.sdetlabs.framework.mocking.CommerceSimulationTest"/>
+            <class name="com.sdetlabs.framework.resilience.ResilienceBehaviorTest"/>
+            <class name="com.sdetlabs.framework.resilience.CircuitBreakerTest"/>
+            <class name="com.sdetlabs.framework.security.SecurityPerformanceTest"/>
+            <class name="com.sdetlabs.framework.concurrent.ParallelExecutionTest"/>
+            <class name="com.sdetlabs.api.commerce.OrderProcessingE2ETest"/>
+            <class name="com.sdetlabs.api.gorest.GoRestUserPostLifecycleTest"/>
+            <class name="com.sdetlabs.api.gorest.GoRestValidationTest"/>
+            <class name="com.sdetlabs.framework.config.ConfigManagerTest"/>
+            <class name="com.sdetlabs.framework.logging.SensitiveDataFilterTest"/>
+            <class name="com.sdetlabs.framework.data.SerializationTest"/>
+        </classes>
+    </test>
+</suite>

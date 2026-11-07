@@ -1,0 +1,14 @@
+target/
+allure-results/
+allure-report/
+.allure/
+.idea/*
+!.idea/runConfigurations/
+.idea/runConfigurations/*
+!.idea/runConfigurations/*.xml
+.vscode/
+*.iml
+.env
+.env.*
+!.env.example
+*.log
