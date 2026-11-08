@@ -32,6 +32,8 @@
             <class name="com.sdetlabs.api.gorest.GoRestAuthorizationTest"/>
             <class name="com.sdetlabs.api.gorest.GoRestUserPostLifecycleTest"/>
             <class name="com.sdetlabs.api.gorest.GoRestValidationTest"/>
+            <class name="com.sdetlabs.api.jsonplaceholder.JsonPlaceholderSmokeTest"/>
+            <class name="com.sdetlabs.api.jsonplaceholder.JsonPlaceholderResilienceTest"/>
             <class name="com.sdetlabs.framework.data.SerializationTest"/>
             <class name="com.sdetlabs.api.dummyjson.CsvProductDataProviderTest"/>
             <class name="com.sdetlabs.api.dummyjson.ExcelProductDataProviderTest"/>

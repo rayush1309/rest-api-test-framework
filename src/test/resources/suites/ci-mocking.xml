@@ -12,6 +12,7 @@
             <class name="com.sdetlabs.framework.mocking.CommerceSimulationTest"/>
             <class name="com.sdetlabs.api.commerce.OrderProcessingE2ETest"/>
             <class name="com.sdetlabs.framework.concurrent.ParallelExecutionTest"/>
+            <class name="com.sdetlabs.api.jsonplaceholder.JsonPlaceholderResilienceTest"/>
         </classes>
     </test>
 </suite>
